@@ -46,7 +46,7 @@ function handleJsonObject(jsonObject,resultArray){
 
 //处理普通的Json对象
 function handleNoramlObject(normalObject,resultArray){
-	if(isString(normalObject)){
+	if(isString(normalObject) || !normalObject){
 		return;
 	}
 	var normalArray = new Array();
@@ -87,12 +87,33 @@ function addToArrayNoRepeat(arr1,arr2){
 			arr2.forEach((item,index,array)=>{
 				keyArray2.push(item.key);
 			})
-			if(keyArray1.sort().toString()== keyArray2.sort().toString()){
+			var keyArrayStr1 = keyArray1.sort().toString();
+			var keyArrayStr2 = keyArray2.sort().toString();
+			if(keyArrayStr1 == keyArrayStr2){
 				return;
 			}
 		}
 	}
 	arr1.push(arr2);
+}
+
+//去除剩余的重复数据
+function delRemainSameData(arr){
+	var checkArray = new Array();
+	var resultArray = new Array();
+	for(var i = 0;i < arr.length;i++){
+		var value = arr[i];
+		var keysArray = new Array();
+		for(var j = 0;j < value.length;j++){
+			keysArray.push(value[j]['key']);
+		}
+		var valueStr = keysArray.sort().toString();
+		if(checkArray.length == 0 || checkArray.indexOf(valueStr) == -1){
+			checkArray.push(valueStr);
+			resultArray.push(value);
+		}
+	}
+	return resultArray;
 }
 
 //判断是否是数组
@@ -206,7 +227,6 @@ function ocFormat(handledObj){
 		var key = handleKeyConvert(item.key);
 		var value = item.value;
 		var valueType = 'strong';
-		console.log(arrayType);
 		if(value == stringType){
 			value = 'NSString *';
 			valueType = 'copy';
@@ -322,32 +342,33 @@ var vm1 = new Vue({
 			}
 			
 			this.outputValue = resStr;
+			var jsonObject = getJsonObject(this.inputValue);
+			var resultArray = delRemainSameData(handleJsonObject(jsonObject,new Array()));
+			var resStr = '----- 共' + resultArray.length + '条Model数据 -----\n';
+			for(var i = 0;i < resultArray.length;i++){
+			    var formatStr = ';'
+			    if(vm2.language == 'Java'){
+			        formatStr = javaFormat(resultArray[i]);
+			    }else if(vm2.language == 'PHP'){
+			        formatStr = phpFormat(resultArray[i]);
+			    }else if(vm2.language == 'Objective-C'){
+			        formatStr = ocFormat(resultArray[i]);
+			    }else if(vm2.language == 'Swift'){
+			        formatStr = swiftFormat(resultArray[i]);
+			    }else if(vm2.language == 'C#'){
+			        formatStr = cSharpFormat(resultArray[i]);
+			    }else if(vm2.language == 'JavaScript'){
+			        formatStr = JavaScriptFormat(resultArray[i]);
+			    }
+			    resStr += formatStr + '----------------------------\n';
+			}
+			this.outputValue = resStr;
 			try {
-			   var jsonObject = getJsonObject(this.inputValue);
-			   var resultArray = handleJsonObject(jsonObject,new Array());
-			   var resStr = '----- 共' + resultArray.length + '条Model数据 -----\n';
-			   for(var i = 0;i < resultArray.length;i++){
-				   var formatStr = ';'
-				   if(vm2.language == 'Java'){
-					   formatStr = javaFormat(resultArray[i]);
-				   }else if(vm2.language == 'PHP'){
-					   formatStr = phpFormat(resultArray[i]);
-				   }else if(vm2.language == 'Objective-C'){
-					   formatStr = ocFormat(resultArray[i]);
-				   }else if(vm2.language == 'Swift'){
-					   formatStr = swiftFormat(resultArray[i]);
-				   }else if(vm2.language == 'C#'){
-					   formatStr = cSharpFormat(resultArray[i]);
-				   }else if(vm2.language == 'JavaScript'){
-					   formatStr = JavaScriptFormat(resultArray[i]);
-				   }
-				   resStr += formatStr + '----------------------------\n';
-			   }
-			   this.outputValue = resStr;
+			   
 			}
 			catch(err){
-			     alert('转换失败，错误信息为：' + err);
-				 this.outputValue = '';
+			    alert('转换失败，错误信息为：' + err);
+				this.outputValue = '';
 			}
 		},
 		languageClick(value){
