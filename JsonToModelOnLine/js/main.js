@@ -32,7 +32,7 @@ function handleJsonObject(jsonObject,resultArray){
 			if(isArray(item)){
 				var normalArray = new Array();
 				normalArray.push({key:key,value:arrayType,arrayType:getArraContentType(item)});
-				addToArrayNoRepeat(resultArray,normalArray);
+				addToArray(resultArray,normalArray);
 				handleJsonObject(item,resultArray);
 			}else{
 				handleNoramlObject(item,resultArray);
@@ -54,7 +54,7 @@ function handleNoramlObject(normalObject,resultArray){
 		var value = normalObject[key];
 		if(isArray(value)){
 			normalArray.push({key:key,value:arrayType,arrayType:getArraContentType(value)});
-			addToArrayNoRepeat(resultArray,normalArray);
+			addToArray(resultArray,normalArray);
 			handleJsonObject(value,resultArray);
 		}else if(isString(value)){
 			normalArray.push({key:key,value:stringType});
@@ -71,29 +71,11 @@ function handleNoramlObject(normalObject,resultArray){
 			handleJsonObject(value,resultArray);
 		}
 	});
-	addToArrayNoRepeat(resultArray,normalArray);
+	addToArray(resultArray,normalArray);
 }
 
-//在结果数组中添加新数组的元素，且避免重复元素
-function addToArrayNoRepeat(arr1,arr2){
-	for(var i = 0;i < arr1.length;i++){
-		var value1 = arr1[i];
-		if(value1.length == arr2.length){
-			var keyArray1 = new Array();
-			var keyArray2 = new Array();
-			value1.forEach((item,index,array)=>{
-				keyArray1.push(item.key);
-			})
-			arr2.forEach((item,index,array)=>{
-				keyArray2.push(item.key);
-			})
-			var keyArrayStr1 = keyArray1.sort().toString();
-			var keyArrayStr2 = keyArray2.sort().toString();
-			if(keyArrayStr1 == keyArrayStr2){
-				return;
-			}
-		}
-	}
+//在结果数组中添加新数组的元素
+function addToArray(arr1,arr2){
 	arr1.push(arr2);
 }
 
@@ -183,8 +165,8 @@ function getAnnotation(){
 
 //key值转换（驼峰转下划线或下划线转驼峰或都不进行）
 function handleKeyConvert(key){
-	var toHump = localStorage.getItem('toHump') == 'false' ? 0 : 1;
-	var toUnderline = localStorage.getItem('toUnderline') == 'false' ? 0 : 1;
+	var toHump = localStorage.getItem('toHump') == 'true' ? 1 : 0;
+	var toUnderline = localStorage.getItem('toUnderline') == 'true' ? 1 : 0;
 	if(toHump){
 		return toHumpFunc(key);
 	}else if(toUnderline){
@@ -378,9 +360,9 @@ var vm2 = new Vue({
 	el: '.function-part',
 	data: {
 		language: localStorage.getItem('language') ? localStorage.getItem('language') : 'Java',
-		addCommentChecked: localStorage.getItem('addComment') == 'false' ? 0 : 1,
-		toHumpChecked: localStorage.getItem('toHump') == 'false' ? 0 : 1,
-		toUnderlineChecked: localStorage.getItem('toUnderline') == 'false' ? 0 : 1,
+		addCommentChecked: localStorage.getItem('addComment') == 'true' ? 1 : 0,
+		toHumpChecked: localStorage.getItem('toHump') == 'true' ? 1 : 0,
+		toUnderlineChecked: localStorage.getItem('toUnderline') == 'true' ? 1 : 0,
 		languages: [
 			'Java',
 			'PHP',
