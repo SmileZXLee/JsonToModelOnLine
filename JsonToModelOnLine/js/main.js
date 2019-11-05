@@ -184,10 +184,10 @@ function getAnnotation(){
 //key值转换（驼峰转下划线或下划线转驼峰或都不进行）
 function handleKeyConvert(key){
 	var toHump = localStorage.getItem('toHump') == 'false' ? 0 : 1;
-	var toUnderLine = localStorage.getItem('toUnderLine') == 'false' ? 0 : 1;
+	var toUnderline = localStorage.getItem('toUnderline') == 'false' ? 0 : 1;
 	if(toHump){
 		return toHumpFunc(key);
-	}else if(toUnderLine){
+	}else if(toUnderline){
 		return toUnderLineFunc(key);
 	}
 	return key;
@@ -340,31 +340,28 @@ var vm1 = new Vue({
 				alert('请在左侧输入Json字符串');
 				return;
 			}
-			
-			this.outputValue = resStr;
-			var jsonObject = getJsonObject(this.inputValue);
-			var resultArray = delRemainSameData(handleJsonObject(jsonObject,new Array()));
-			var resStr = '----- 共' + resultArray.length + '条Model数据 -----\n';
-			for(var i = 0;i < resultArray.length;i++){
-			    var formatStr = ';'
-			    if(vm2.language == 'Java'){
-			        formatStr = javaFormat(resultArray[i]);
-			    }else if(vm2.language == 'PHP'){
-			        formatStr = phpFormat(resultArray[i]);
-			    }else if(vm2.language == 'Objective-C'){
-			        formatStr = ocFormat(resultArray[i]);
-			    }else if(vm2.language == 'Swift'){
-			        formatStr = swiftFormat(resultArray[i]);
-			    }else if(vm2.language == 'C#'){
-			        formatStr = cSharpFormat(resultArray[i]);
-			    }else if(vm2.language == 'JavaScript'){
-			        formatStr = JavaScriptFormat(resultArray[i]);
-			    }
-			    resStr += formatStr + '----------------------------\n';
-			}
-			this.outputValue = resStr;
 			try {
-			   
+			   var jsonObject = getJsonObject(this.inputValue);
+			   var resultArray = delRemainSameData(handleJsonObject(jsonObject,new Array()));
+			   var resStr = '----- 共' + resultArray.length + '条Model数据 -----\n';
+			   for(var i = 0;i < resultArray.length;i++){
+			       var formatStr = ';'
+			       if(vm2.language == 'Java'){
+			           formatStr = javaFormat(resultArray[i]);
+			       }else if(vm2.language == 'PHP'){
+			           formatStr = phpFormat(resultArray[i]);
+			       }else if(vm2.language == 'Objective-C'){
+			           formatStr = ocFormat(resultArray[i]);
+			       }else if(vm2.language == 'Swift'){
+			           formatStr = swiftFormat(resultArray[i]);
+			       }else if(vm2.language == 'C#'){
+			           formatStr = cSharpFormat(resultArray[i]);
+			       }else if(vm2.language == 'JavaScript'){
+			           formatStr = JavaScriptFormat(resultArray[i]);
+			       }
+			       resStr += formatStr + '----------------------------\n';
+			   }
+			   this.outputValue = resStr;
 			}
 			catch(err){
 			    alert('转换失败，错误信息为：' + err);
@@ -407,7 +404,7 @@ var vm2 = new Vue({
 			}
 			if(value.currentTarget.name == 'toUnderline' && value.currentTarget.checked){
 				this.toHumpChecked = !value.currentTarget.checked;
-				localStorage.setItem('toHump',this.toHumpChecked);''
+				localStorage.setItem('toHump',this.toHumpChecked);
 			}
 		}
 	}		
