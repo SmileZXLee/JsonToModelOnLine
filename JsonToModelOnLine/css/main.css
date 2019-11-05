@@ -1,0 +1,89 @@
+/**
+ * JsonToModelOnLine
+ * @author ZXLee
+ * @github https://github.com/SmileZXLee/JsonToModelOnLine
+ */
+
+body,html{
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color: #0d0f32;
+}
+div,h1{
+	moz-user-select: -moz-none;
+	-moz-user-select: none;
+	-o-user-select:none;
+	-khtml-user-select:none;
+	-webkit-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+}
+h1{
+	text-align: center;
+	height: 60px;
+	color: white;
+	line-height: 60px;
+	margin: 0;
+}
+.function-part{
+	width: 100%;
+	height: 60px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	color: white;
+	font-size: 14px;
+}
+.function-part label{
+	margin-left: 20px;
+}
+.main{
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 10px;
+	height: calc(92% - 60px - 60px - 10px);
+	display: flex;
+	justify-content: space-between;
+}
+.input-part,.output-part{
+	width: 37%;
+	height: 100%;
+	background-color: #0D0F32;
+}
+.input-part-textarea{
+	width: 100%;
+	height: 100%;
+	background: #0D0F32;
+	border-radius: 10px;
+	border-width: 2px;
+	border-color: white;
+	color: white;
+	font-size: 17px;
+	padding: 10px;
+}
+.action-part{
+	width: 26%;
+	margin-left: 30px;
+	display: flex;
+	justify-content: center;
+	
+}
+.convert-action{
+	width: 100%;
+	height: 100%;
+	background: #0D0F32;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.convert-icon{
+	height: 150px;
+	width: 100%;
+}
+.action-part{
+	background: #FFFFFF;
+}
+
