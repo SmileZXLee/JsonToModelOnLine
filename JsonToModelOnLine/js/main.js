@@ -14,9 +14,12 @@ const idType = 'id';
 
 //Json字符串转Json对象
 function getJsonObject(str){
-	return JSON.parse(str)
+	return JSON.parse(str);
 }
-
+//格式化输出Json
+function formatJson(str){
+	return JSON.stringify(getJsonObject(str), null, "\t")
+}
 //字符串格式化
 String.prototype.format=function() { 
     if(arguments.length==0) return this; 
@@ -324,6 +327,7 @@ var vm1 = new Vue({
 			}
 			try {
 			   var jsonObject = getJsonObject(this.inputValue);
+			   this.inputValue = formatJson(this.inputValue);
 			   var resultArray = delRemainSameData(handleJsonObject(jsonObject,new Array()));
 			   var resStr = '----- 共' + resultArray.length + '条Model数据 -----\n';
 			   for(var i = 0;i < resultArray.length;i++){
