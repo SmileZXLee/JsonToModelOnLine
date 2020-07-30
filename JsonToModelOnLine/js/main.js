@@ -6,6 +6,7 @@
 
 const booleanType = 'boolean';
 const intType = 'int';
+const longType = 'long';
 const floatType = 'float';
 const numberType = 'number';
 const stringType = 'string';
@@ -55,18 +56,15 @@ function handleNoramlObject(normalObject,resultArray){
 	var normalArray = new Array();
 	Object.getOwnPropertyNames(normalObject).forEach(function(key){
 		var value = normalObject[key];
-		if(isArray(value)){
+		let type = this.getType(value);
+		if(type == arrayType){
 			normalArray.push({key:key,value:arrayType,arrayType:getArraContentType(value)});
 			addToArray(resultArray,normalArray);
 			handleJsonObject(value,resultArray);
-		}else if(isString(value)){
+		}else if(type == stringType){
 			normalArray.push({key:key,value:stringType});
 		}else if(isNumber(value)){
-			if((value | 0) === value){
-				normalArray.push({key:key,value:intType});
-			}else{
-				normalArray.push({key:key,value:floatType});
-			}
+			normalArray.push({key:key,value:type});
 		}else if(isBoolean(value)){
 			normalArray.push({key:key,value:booleanType});
 		}else{
@@ -133,6 +131,9 @@ function getType(obj){
 		if((obj | 0) === obj){
 			return intType;
 		}else{
+			if(obj.toString().indexOf('.') == -1){
+				return longType;
+			}
 			return floatType;
 		}
 	}
@@ -222,7 +223,7 @@ function ocFormat(handledObj){
 		}else{
 			value += ' ';
 		}
-		if(value == intType + ' ' || value == floatType + ' ' || value == 'BOOL '){
+		if(value == intType + ' ' || value == longType + ' ' || value == floatType + ' ' || value == 'BOOL '){
 			valueType = 'assign';
 		}
 		var str = "@property ({0}, nonatomic) {1}{2};\n".format(valueType, value,key);
