@@ -124,10 +124,14 @@ function getType(obj){
 	if(isArray(obj)){
 		return arrayType;
 	}
+	var outputAllToString = localStorage.getItem('outputAllToString') == 'true' ? 1 : 0;
 	if(isString(obj)){
 		return stringType;
 	}
 	if(isNumber(obj)){
+		if(outputAllToString){
+			return stringType;
+		}
 		if((obj | 0) === obj){
 			return intType;
 		}else{
@@ -220,6 +224,8 @@ function ocFormat(handledObj){
 			value = 'NSArray *';
 		}else if(value == booleanType){
 			value = 'BOOL ';
+		}else if(value == floatType){
+			value = 'CGFloat ';
 		}else{
 			value += ' ';
 		}
@@ -227,7 +233,8 @@ function ocFormat(handledObj){
 			valueType = 'assign';
 		}
 		var str = "@property ({0}, nonatomic) {1}{2};\n".format(valueType, value,key);
-		propertyFormat += getAnnotation() + str;
+		var annotation = localStorage.getItem('addComment') == 'true' ? '///\n' : '';
+		propertyFormat += annotation + str;
 	})
 	return propertyFormat;
 }
@@ -240,6 +247,8 @@ function swiftFormat(handledObj){
 		var value = item.value;
 		if(value == booleanType){
 			value = 'Bool';
+		}else if(value == floatType){
+			value = 'CGFloat ';
 		}else if(value == idType){
 			value = 'any';
 		}else{
@@ -260,7 +269,8 @@ function swiftFormat(handledObj){
 			}
 			value = '[{0}]'.format(itemArrayType);
 		}
-		propertyFormat += getAnnotation() + 'var {0} :{1}?\n'.format(key,value);
+		var annotation = localStorage.getItem('addComment') == 'true' ? '///\n' : '';
+		propertyFormat += annotation + 'var {0} :{1}?\n'.format(key,value);
 	})
 	return propertyFormat;
 }
@@ -368,6 +378,7 @@ var vm2 = new Vue({
 		addCommentChecked: localStorage.getItem('addComment') == 'true' ? 1 : 0,
 		toHumpChecked: localStorage.getItem('toHump') == 'true' ? 1 : 0,
 		toUnderlineChecked: localStorage.getItem('toUnderline') == 'true' ? 1 : 0,
+		outputAllToStringChecked: localStorage.getItem('outputAllToString') == 'true' ? 1 : 0,
 		languages: [
 			'Java',
 			'PHP',
