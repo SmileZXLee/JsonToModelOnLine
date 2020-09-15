@@ -1,7 +1,7 @@
 # JsonToModelOnLine
 ## 在线地址(点击直接访问👉)http://www.zxlee.cn/JsonToModelOnLine/index.html
 ## 主要功能
-* 支持语言:Java、PHP、Objective-C、Swift、C#、JavaScript
+* 支持语言:Java、PHP、Objective-C、Swift、C#、Vue Data
 * 支持下划线转驼峰或驼峰转下划线
 * 支持添加注释头
 * 支持任意层级的Json数据，自动过滤重复数据
@@ -144,21 +144,21 @@ public Object result { get; set;};
 ----------------------------
 ```
 
-### 转JavaScript模型类
+### 转Vue data
 ```javascript
 ----- 共3条Model数据 -----
-var collectCount;
-var crawlTime;
-var ranks;
+collectCount: '',
+crawlTime: '',
+ranks: []
 ----------------------------
-var rankStr;
-var title;
-var url;
-var xiongzhangId;
+rankStr: '',
+title: '',
+url: '',
+xiongzhangId: ''
 ----------------------------
-var error_code;
-var success;
-var reason;
-var result;
+error_code: 0,
+success: false,
+reason: '',
+result: null
 ----------------------------
 ```
