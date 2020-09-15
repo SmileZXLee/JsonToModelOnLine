@@ -307,14 +307,25 @@ function phpFormat(handledObj){
 	return propertyFormat;
 }
 
-//JavaScript模型的格式化
-function JavaScriptFormat(handledObj){
+//Vue data的格式化
+function VueFormat(handledObj){
 	var propertyFormat = '';
 	handledObj.forEach((item,index,array)=>{
 		var key = handleKeyConvert(item.key);
 		var value = item.value;
+		if(value == stringType){
+			value = '\'\'';
+		}else if(value == idType){
+			value = 'null';
+		}else if(value == arrayType){
+			value = '[]' ;
+		}else if(value == booleanType){
+			value = 'false' ;
+		}else{
+			value = '0'
+		}
 		var annotation = localStorage.getItem('addComment') == 'true' ? '//\n' : '';
-		propertyFormat += annotation + 'var' + ' ' + key + ';\n';
+		propertyFormat += annotation + key + ': ' + value + (index == array.length - 1 ? '\n' : ',\n');
 	})
 	return propertyFormat;
 }
@@ -353,8 +364,8 @@ var vm1 = new Vue({
 			           formatStr = swiftFormat(resultArray[i]);
 			       }else if(vm2.language == 'C#'){
 			           formatStr = cSharpFormat(resultArray[i]);
-			       }else if(vm2.language == 'JavaScript'){
-			           formatStr = JavaScriptFormat(resultArray[i]);
+			       }else if(vm2.language == 'Vue'){
+			           formatStr = VueFormat(resultArray[i]);
 			       }
 			       resStr += formatStr + '----------------------------\n';
 			   }
@@ -385,7 +396,7 @@ var vm2 = new Vue({
 			'Objective-C',
 			'Swift',
 			'C#',
-			'JavaScript'
+			'Vue'
 		]
 	},	
 	methods:{
