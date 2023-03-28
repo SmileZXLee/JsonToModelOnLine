@@ -54,7 +54,10 @@
   <div class="output-part">
     <div class="output-part-container">
       <div v-for="(item, index) in outputValue" :key="index">
-        <div class="output-part-parent">{{item.parent}}</div>
+        <div class="output-part-parent" v-if="item.parent">
+          <span style="font-size: 12px;">{{new Array(item.level).join("+")}}</span>
+          <span style="user-select: all">{{item.parent}}</span>
+        </div>
         <div class="output-part-card">
           <pre><code :class="`language-${languageAliasesMapper[localStorage.getItem('language') || 'Java']}`">{{item.data}}</code></pre>
         </div>

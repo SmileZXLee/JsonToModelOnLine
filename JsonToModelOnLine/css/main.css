@@ -91,6 +91,7 @@ h1{
 }
 pre{
   margin: 0 !important;
+  white-space: pre-wrap;
 }
 .output-part-empty{
   color: #888888;

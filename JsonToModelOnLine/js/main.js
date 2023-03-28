@@ -10,7 +10,7 @@ function getJsonObject(str) {
 }
 //格式化输出Json
 function formatJson(str) {
-	return JSON.stringify(getJsonObject(str), null, "    ")
+	return JSON.stringify(getJsonObject(str), null, new Array(4).join(" "))
 }
 //字符串格式化
 String.prototype.format = function() { 
@@ -58,6 +58,7 @@ var vm1 = new Vue({
              const formater = FormaterFactory.createFormater(vm2.language, resultArray[i]);
              formater && outputValue.push({
               parent: resultArray[i][0].parent || null,
+              level: resultArray[i][0].level || 1,
               data: formater.format()
              });
 			   }
