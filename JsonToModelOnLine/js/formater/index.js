@@ -189,7 +189,7 @@ class SwiftFormater extends Formater {
       if (value == types.arrayType) {
         let itemArrayType = item.arrayType;
         itemArrayType = formatValue(itemArrayType);
-        value = '[{0}]'.format(itemArrayType);
+        value = `[${itemArrayType}]`;
       }
       const annotation = localStorage.getItem('addComment') == 'true' ? '///\n' : '';
       return `${annotation}var ${key} :${value}?\n`;

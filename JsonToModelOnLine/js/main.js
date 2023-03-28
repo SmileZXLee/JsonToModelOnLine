@@ -12,13 +12,6 @@ function getJsonObject(str) {
 function formatJson(str) {
 	return JSON.stringify(getJsonObject(str), null, new Array(4).join(" "))
 }
-//字符串格式化
-String.prototype.format = function() { 
-    if (arguments.length == 0) return this; 
-    for(var s = this,i=0;i < arguments.length;i++) 
-        s=s.replace(new RegExp("\\{"+i+"\\}","g"), arguments[i]); 
-    return s; 
-};
 
 //点击了github图标，跳转
 function githubAction() {
@@ -39,11 +32,12 @@ var vm1 = new Vue({
       'Vue': 'javascript',
       'Typescript': 'typescript',
     },
+    currentConvertedLanguage: localStorage.getItem('language') || 'Java',
     hasSelect: false
 	},	
 	methods:{
 		convertAction(){
-			if(!this.inputValue.length){
+			if (!this.inputValue.length) {
 				alert('请在左侧输入Json字符串');
 				return;
 			}
@@ -62,10 +56,10 @@ var vm1 = new Vue({
 			   for (let i = 0;i < resultArray.length; i++) {
              const formater = FormaterFactory.createFormater(vm2.language, resultArray[i]);
              formater && outputValue.push({
-              highlight: false,
-              parent: resultArray[i][0].parent || null,
-              level: resultArray[i][0].level || 1,
-              data: formater.format()
+                highlight: false,
+                parent: resultArray[i][0].parent || null,
+                level: resultArray[i][0].level || 1,
+                data: formater.format()
              });
 			   }
 			   this.$nextTick(() => {
@@ -73,11 +67,11 @@ var vm1 = new Vue({
           this.$nextTick(() => {
             hljs.highlightAll();
           })
+          this.currentConvertedLanguage = localStorage.getItem('language') || 'Java';
          })
          
-			}
-			catch(err){
-			    alert('转换失败，错误信息为：' + err);
+			} catch(err) {
+			  alert('转换失败，错误信息为：' + err);
 				this.outputValue = [];
 			}
 		},
@@ -85,21 +79,40 @@ var vm1 = new Vue({
 			console.log(value.currentTarget.value);
 		},
     handleInputSelectChange() {
+      function doSelectNode($this, item, index) {
+        $this.$set(item, 'highlight', true);
+        $this.hasSelect = true;
+        const element = document.getElementById('output-card-id-' + index);
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       this.$nextTick(() => {
         const selectedStr = window.getSelection().toString();
-        if (selectedStr || this.hasSelect) {
+        if (!!selectedStr || this.hasSelect) {
           this.hasSelect = false;
           for(let i = 0; i < this.outputValue.length; i++) {
             const item = this.outputValue[i];
             this.$set(item, 'highlight', false);
             if (item.parent === selectedStr) {
-              this.$set(item, 'highlight', true);
-              this.hasSelect = true;
-              const element = document.getElementById('output-card-id-' + i);
-              element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              doSelectNode(this, item, i);
               break;
             }
           }
+          
+          if (!!selectedStr && !this.hasSelect) {
+            const allSelectedKeys = selectedStr.match(/(?<=")(.*?)(?=":)/g) || [selectedStr];
+            for(let i = 0; i < this.outputValue.length; i++) {
+              const item = this.outputValue[i];
+              if (allSelectedKeys.every(key => {
+                return item.data.indexOf(key + " ") !== -1 || item.data.indexOf(key + ":") !== -1 || 
+                  item.data.indexOf(key + ";") !== -1 || item.data.indexOf(key + "?") !== -1;
+                })
+              ) {
+                doSelectNode(this, item, i);
+                break;
+              }
+            }
+          }
+          
         }
       })
     }
@@ -132,11 +145,11 @@ var vm2 = new Vue({
 		actionClick(value){
 			localStorage.setItem(value.currentTarget.name,value.currentTarget.checked);
 			this[value.currentTarget.name + 'Checked'] = value.currentTarget.checked;
-			if(value.currentTarget.name == 'toHump' && value.currentTarget.checked){
+			if (value.currentTarget.name == 'toHump' && value.currentTarget.checked) {
 				this.toUnderlineChecked = !value.currentTarget.checked;
 				localStorage.setItem('toUnderline',this.toUnderlineChecked);
 			}
-			if(value.currentTarget.name == 'toUnderline' && value.currentTarget.checked){
+			if (value.currentTarget.name == 'toUnderline' && value.currentTarget.checked) {
 				this.toHumpChecked = !value.currentTarget.checked;
 				localStorage.setItem('toHump',this.toHumpChecked);
 			}

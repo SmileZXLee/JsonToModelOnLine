@@ -59,7 +59,7 @@
           <span style="user-select: all" :style="{background:item.highlight?'#2c77f6':'transparent'}">{{item.parent}}</span>
         </div>
         <div class="output-part-card">
-          <pre><code :class="`language-${languageAliasesMapper[localStorage.getItem('language') || 'Java']}`">{{item.data}}</code></pre>
+          <pre><code :class="`language-${languageAliasesMapper[currentConvertedLanguage]}`">{{item.data}}</code></pre>
         </div>
       </div>
       <div v-if="!outputValue.length" class="output-part-empty">无转换结果</div>
