@@ -107,6 +107,8 @@ class JavaFormater extends Formater {
           tempValue = 'Boolean';
         } else if (tempValue == types.intType) {
           tempValue = 'Integer';
+        } else if (tempValue == types.longType) {
+          tempValue = 'Long';
         } else if (tempValue == types.floatType) {
           tempValue = 'Float';
         } else if (tempValue == types.idType) {
