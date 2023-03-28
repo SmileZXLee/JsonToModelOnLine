@@ -44,7 +44,7 @@
   </div>
   <div class="main">
   <div class="input-part">
-    <textarea class="input-part-textarea" placeholder="请输入Json字符串" autofocus="true" v-model="inputValue"></textarea>
+    <textarea class="input-part-textarea" id="input-part-textarea" placeholder="请输入Json字符串" autofocus="true" v-model="inputValue" @select="handleInputSelectChange" @blur="handleInputSelectChange"  @click="handleInputSelectChange"></textarea>
   </div>
   <div class="action-part">
     <div class="convert-action" @click="convertAction">
@@ -53,10 +53,10 @@
   </div>
   <div class="output-part">
     <div class="output-part-container">
-      <div v-for="(item, index) in outputValue" :key="index">
+      <div v-for="(item, index) in outputValue" :key="index" :id="'output-card-id-'+index">
         <div class="output-part-parent" v-if="item.parent">
-          <span style="font-size: 12px;">{{new Array(item.level).join("+")}}</span>
-          <span style="user-select: all">{{item.parent}}</span>
+          <span style="font-size: 12px;">{{new Array(item.level).join(">")}}</span>
+          <span style="user-select: all" :style="{background:item.highlight?'#2c77f6':'transparent'}">{{item.parent}}</span>
         </div>
         <div class="output-part-card">
           <pre><code :class="`language-${languageAliasesMapper[localStorage.getItem('language') || 'Java']}`">{{item.data}}</code></pre>

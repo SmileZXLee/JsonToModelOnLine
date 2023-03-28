@@ -38,7 +38,8 @@ var vm1 = new Vue({
       'C#': 'csharp',
       'Vue': 'javascript',
       'Typescript': 'typescript',
-    }
+    },
+    hasSelect: false
 	},	
 	methods:{
 		convertAction(){
@@ -49,6 +50,10 @@ var vm1 = new Vue({
 			try {
 			   var jsonObject = getJsonObject(this.inputValue);
 			   this.inputValue = formatJson(this.inputValue);
+         this.$nextTick(() => {
+          const textarea = document.getElementById('input-part-textarea');
+          textarea.scrollTop = 0;
+         })
          const parser = new Parser(jsonObject);
 			   var resultArray = parser.parse();
          resultArray = resultArray.filter(subArr => subArr && subArr.length);
@@ -57,6 +62,7 @@ var vm1 = new Vue({
 			   for (let i = 0;i < resultArray.length; i++) {
              const formater = FormaterFactory.createFormater(vm2.language, resultArray[i]);
              formater && outputValue.push({
+              highlight: false,
               parent: resultArray[i][0].parent || null,
               level: resultArray[i][0].level || 1,
               data: formater.format()
@@ -77,7 +83,26 @@ var vm1 = new Vue({
 		},
 		languageClick(value){
 			console.log(value.currentTarget.value);
-		}
+		},
+    handleInputSelectChange() {
+      this.$nextTick(() => {
+        const selectedStr = window.getSelection().toString();
+        if (selectedStr || this.hasSelect) {
+          this.hasSelect = false;
+          for(let i = 0; i < this.outputValue.length; i++) {
+            const item = this.outputValue[i];
+            this.$set(item, 'highlight', false);
+            if (item.parent === selectedStr) {
+              this.$set(item, 'highlight', true);
+              this.hasSelect = true;
+              const element = document.getElementById('output-card-id-' + i);
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              break;
+            }
+          }
+        }
+      })
+    }
 	}		
 });
 
