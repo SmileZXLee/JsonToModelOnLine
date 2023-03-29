@@ -99,7 +99,15 @@ var vm1 = new Vue({
           }
           
           if (!!selectedStr && !this.hasSelect) {
-            const allSelectedKeys = selectedStr.match(/(?<=")(.*?)(?=":)/g) || [selectedStr];
+            const regex = /"([^"]*)":/g;
+            let allSelectedKeys = [];
+            let match;
+            while ((match = regex.exec(selectedStr)) !== null) {
+              allSelectedKeys.push(match[1]);
+            }
+            if (!allSelectedKeys.length) {
+              allSelectedKeys = [selectedStr.replace(/"/g, '')];
+            }
             for(let i = 0; i < this.outputValue.length; i++) {
               const item = this.outputValue[i];
               if (allSelectedKeys.every(key => {
