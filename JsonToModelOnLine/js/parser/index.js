@@ -16,14 +16,14 @@ class Parser {
   }
 
   //去除剩余的重复数据
-  _delSameData(arr){
+  _delSameData(arr) {
     const checkArray = new Array();
     const resultArray = new Array();
-    for(let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
       const value = arr[i];
       const keysArray = new Array();
       const parent = value.length ? (value[0].parent || '') : '';
-      for(let j = 0; j < value.length; j++) {
+      for (let j = 0; j < value.length; j++) {
         keysArray.push(value[j]['key']);
       }
       const valueStr = parent + keysArray.sort().toString();
@@ -32,20 +32,17 @@ class Parser {
         resultArray.push(value);
       }
     }
-    
-    if (resultArray.length >= 2) {
-      resultArray.unshift(resultArray.pop())
-    }
+
     return resultArray;
   }
 
   //处理Json对象（所有类型）
   _handleJsonObject(jsonObject, resultArray, parent, level = 0) {
-    level ++;
+    level++;
     if (Type.isArray(jsonObject)) {
       jsonObject.forEach(item => {
         if (Type.isArray(item)) {
-          resultArray.push([{key, value: Type.types.arrayType, arrayType: getArraContentType(item)}]);
+          resultArray.push([{ key, value: Type.types.arrayType, arrayType: getArraContentType(item) }]);
           this._handleJsonObject(item, resultArray, parent, level);
         } else {
           this._handleNoramlObject(item, resultArray, parent, level);
@@ -67,19 +64,20 @@ class Parser {
       const value = normalObject[key];
       const type = Type.getType(value);
       const types = Type.types;
-      const baseInfo = {parent, level, key};
+      const baseInfo = { parent, level, key };
       if (type == types.arrayType) {
-        normalArray.push({...baseInfo, value: type, arrayType: Type.getArraContentType(value)});
+        normalArray.push({ ...baseInfo, value: type, arrayType: Type.getArraContentType(value) });
         resultArray.push(normalArray);
         this._handleJsonObject(value, resultArray, key, level);
       } else if (type == types.stringType) {
-        normalArray.push({...baseInfo, value: types.stringType});
+        normalArray.push({ ...baseInfo, value: types.stringType });
       } else if (Type.isNumber(value)) {
-        normalArray.push({...baseInfo, value: type});
+        normalArray.push({ ...baseInfo, value: type });
       } else if (Type.isBoolean(value)) {
-        normalArray.push({...baseInfo, value: types.booleanType});
+        normalArray.push({ ...baseInfo, value: types.booleanType });
       } else {
-        normalArray.push({...baseInfo, value: types.idType});
+        normalArray.push({ ...baseInfo, value: types.idType });
+        resultArray.push(normalArray);
         this._handleJsonObject(value, resultArray, key, level);
       }
     });

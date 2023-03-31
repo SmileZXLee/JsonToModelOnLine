@@ -4,7 +4,7 @@
  * @github https://github.com/SmileZXLee/JsonToModelOnLine
  */
 
-class FormaterFactory{
+class FormaterFactory {
   static createFormater(language, data) {
     let formater = null;
     switch (language) {
@@ -15,7 +15,7 @@ class FormaterFactory{
       case 'PHP': {
         formater = new PHPFormater(data);
         break;
-      } 
+      }
       case 'Objective-C': {
         formater = new OCFormater(data);
         break;
@@ -50,7 +50,7 @@ class Formater {
   }
 
   format() {
-    
+
   };
 
 
@@ -61,25 +61,25 @@ class Formater {
     this.jsonObj.forEach((item, index, array) => {
       let key = this._handleKeyConvert(item.key);
       let value = item.value;
-      propertyFormat += handler({types, item, index, array, key, value});
+      propertyFormat += handler({ types, item, index, array, key, value });
     })
     return propertyFormat;
   }
 
   //下划线转驼峰
   _toHumpFunc(value) {
-    return value.replace(/\_(\w)/g, function(all, letter){
-        return letter.toUpperCase();
+    return value.replace(/\_(\w)/g, function (all, letter) {
+      return letter.toUpperCase();
     });
   }
 
   //驼峰转下划线
   _toUnderLineFunc(value) {
-    return value.replace(/([A-Z])/g,"_$1").toLowerCase();
+    return value.replace(/([A-Z])/g, "_$1").toLowerCase();
   }
 
   //获取注释头内容
-  _getAnnotation(){
+  _getAnnotation() {
     return localStorage.getItem('addComment') == 'true' ? '/**\n*\n*/\n' : '';
   }
 
@@ -89,7 +89,7 @@ class Formater {
     const toUnderline = localStorage.getItem('toUnderline') == 'true' ? 1 : 0;
     if (toHump) {
       return this._toHumpFunc(key);
-    } else if (toUnderline){
+    } else if (toUnderline) {
       return this._toUnderLineFunc(key);
     }
     return key;
@@ -100,7 +100,7 @@ class JavaFormater extends Formater {
   format() {
     return this._handleFormat(params => {
       let { types, item, key, value } = params;
-      function formatValue(tempValue){
+      function formatValue(tempValue) {
         if (tempValue == types.stringType) {
           tempValue = 'String';
         } else if (tempValue == types.booleanType) {
@@ -134,7 +134,7 @@ class PHPFormater extends Formater {
   format() {
     return this._handleFormat(params => {
       const { key } = params;
-      return this._getAnnotation() + 'public' + ' $' + key +';\n';
+      return this._getAnnotation() + 'public' + ' $' + key + ';\n';
     });
   }
 }
@@ -148,12 +148,12 @@ class OCFormater extends Formater {
       if (value == types.stringType) {
         value = 'NSString *';
         valueType = 'copy';
-      } else if(value == types.arrayType) {
+      } else if (value == types.arrayType) {
         value = 'NSArray *';
-      } else if(value == types.booleanType) {
+      } else if (value == types.booleanType) {
         value = 'BOOL ';
         valueType = 'assign';
-      } else if(value == types.floatType) {
+      } else if (value == types.floatType) {
         value = 'CGFloat ';
         valueType = 'assign';
       } else {
@@ -172,11 +172,11 @@ class SwiftFormater extends Formater {
   format() {
     return this._handleFormat(params => {
       let { types, item, key, value } = params;
-      
-      function formatValue(tempValue){
+
+      function formatValue(tempValue) {
         if (tempValue == types.booleanType) {
           tempValue = 'Bool';
-        } else if(tempValue == types.floatType) {
+        } else if (tempValue == types.floatType) {
           tempValue = 'CGFloat ';
         } else if (tempValue == types.idType) {
           tempValue = 'any';
@@ -211,7 +211,7 @@ class CSharpFormater extends Formater {
       }
       value = formatValue(value);
 
-      if(value == types.arrayType){
+      if (value == types.arrayType) {
         let itemArrayType = item.arrayType;
         itemArrayType = formatValue(itemArrayType);
         value = `List ${itemArrayType}`;
@@ -228,12 +228,12 @@ class VueFormater extends Formater {
       let { types, index, array, key, value } = params;
       if (value == types.stringType) {
         value = '\'\'';
-      } else if(value == types.idType) {
+      } else if (value == types.idType) {
         value = 'null';
-      } else if(value == types.arrayType) {
-        value = '[]' ;
-      } else if(value == types.booleanType) {
-        value = 'false' ;
+      } else if (value == types.arrayType) {
+        value = '[]';
+      } else if (value == types.booleanType) {
+        value = 'false';
       } else {
         value = '0'
       }
@@ -247,11 +247,11 @@ class TypescriptFormater extends Formater {
   format() {
     return this._handleFormat(params => {
       let { types, item, key, value } = params;
-      
+
       function formatValue(tempValue) {
-        if ([types.floatTyp, types.intType, types.longType].indexOf(tempValue) !==-1) {
+        if ([types.floatTyp, types.intType, types.longType].indexOf(tempValue) !== -1) {
           tempValue = 'number';
-        } else if(tempValue == types.idType) {
+        } else if (tempValue == types.idType) {
           tempValue = 'any';
         }
         return tempValue;
@@ -263,7 +263,7 @@ class TypescriptFormater extends Formater {
         let itemArrayType = item.arrayType;
         if (itemArrayType == types.idType) {
           itemArrayType = 'any';
-        } else if ([types.floatTyp, types.intType, types.longType].indexOf(itemArrayType) !==-1) {
+        } else if ([types.floatTyp, types.intType, types.longType].indexOf(itemArrayType) !== -1) {
           itemArrayType = 'number';
         }
         itemArrayType = formatValue(itemArrayType);
