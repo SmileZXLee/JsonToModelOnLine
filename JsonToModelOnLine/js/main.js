@@ -123,6 +123,13 @@ var vm1 = new Vue({
 
         }
       })
+    },
+    copyCodeClick(item) {
+      this.$set(item, 'copied', true);
+      navigator.clipboard.writeText(item.data);
+      setTimeout(() => {
+        this.$set(item, 'copied', false);
+      }, 1500)
     }
   }
 });

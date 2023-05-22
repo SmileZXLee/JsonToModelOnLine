@@ -85,9 +85,39 @@ h1{
   color: white;
   border-radius: 6px;
   user-select: all;
+  -webkit-user-select: all;
   font-size: 15px;
   overflow: hidden;
   margin-bottom: 10px;
+  background-color: #f3f3f3;
+}
+.output-part-card-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 28px;
+  background-color: #eeeeee;
+}
+.card-current-language{
+  font-size: 12px;
+  transform: scale(0.9);
+  margin-left: 6px;
+  font-weight: bold;
+  color: #555555;
+}
+.copy-btn{
+  cursor: pointer;
+  font-size: 12px;
+  color: #555555;
+  height: 20px;
+  width: 62px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 5px;
+  border: solid 1px #555555;
+  transform: scale(0.8);
+  user-select: none;
+  -webkit-user-select: none;
 }
 pre{
   margin: 0 !important;
@@ -115,5 +145,11 @@ pre{
 }
 .action-part{
 	background: #FFFFFF;
+}
+
+pre code.hljs{
+  padding: 12px !important;
+  padding-top: 6px !important;
+  background: #FFFFFF !important;
 }
 
