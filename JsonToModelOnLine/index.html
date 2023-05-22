@@ -12,7 +12,7 @@
 		<meta charset="utf-8" />
 		<title>1JSON</title>
     <meta name="description" content="Json模型在线转换">
-    <meta name="Keywords" content="1JSON,json,model,java,php,objective-c,swift,C#,Vue,Typescript">
+    <meta name="Keywords" content="1JSON,json,model,java,php,objective-c,swift,C#,Vue,Typescript,Flutter">
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
 	</head>
@@ -37,7 +37,7 @@
           <input name="addComment" type="checkbox" @click="actionClick($event)" :checked="addCommentChecked"/>添加注释头
         </label>
         <label>
-          <input name="outputAllToString" type="checkbox" @click="actionClick($event)" :checked="outputAllToStringChecked"/>值类型全转string
+          <input name="outputAllToString" type="checkbox" @click="actionClick($event)" :checked="outputAllToStringChecked"/>数值类型转string
         </label>
         <label>
           <input name="allowNull" type="checkbox" @click="actionClick($event)" :checked="allowNullChecked"/>允许值为空
@@ -62,7 +62,7 @@
             </div>
             <div class="output-part-card">
               <div class="output-part-card-top">
-                <span class="card-current-language">{{currentConvertedLanguage}}</span>
+                <span class="card-current-language">{{languageAliasesMapper[currentConvertedLanguage]}}</span>
                 <span class="copy-btn" @click="copyCodeClick(item)">{{item.copied?'✓ 已复制':'复制代码'}}</span>
               </div>
               <pre><code :class="`language-${languageAliasesMapper[currentConvertedLanguage]}`">{{item.data}}</code></pre>
@@ -79,7 +79,7 @@
     <div style="position: fixed;bottom: 5px;width: 100%;margin-bottom: 10px; display:flex;justify-content: center;font-size:12px;"><a style="color: white;margin-left:5px;" href="https://beian.miit.gov.cn/" target="_blank">闽ICP备17015849号-1</a></div>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
-  <!-- and it's easy to individually load additional languages -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/languages/dart.min.js"></script>
   <script src="js/vue.min.js"></script>
 
   <script src="js/main.js"></script>

@@ -26,11 +26,12 @@ var vm1 = new Vue({
     languageAliasesMapper: {
       'Java': 'java',
       'PHP': 'php',
-      'Objective-C': 'objectivec',
+      'Objective-C': 'objc',
       'Swift': 'swift',
       'C#': 'csharp',
       'Vue': 'javascript',
       'Typescript': 'typescript',
+      'Flutter': 'dart'
     },
     currentConvertedLanguage: localStorage.getItem('language') || 'Java',
     hasSelect: false
@@ -151,7 +152,8 @@ var vm2 = new Vue({
       'Swift',
       'C#',
       'Vue',
-      'Typescript'
+      'Typescript',
+      'Flutter'
     ]
   },
   methods: {

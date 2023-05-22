@@ -36,6 +36,10 @@ class FormaterFactory {
         formater = new TypescriptFormater(data);
         break;
       }
+      case 'Flutter': {
+        formater = new FlutterFormater(data);
+        break;
+      }
       default:
         break;
     }
@@ -274,5 +278,41 @@ class TypescriptFormater extends Formater {
       const allowNull = localStorage.getItem('allowNull') == 'true';
       return `${annotation}${key}${allowNull ? '?' : ''}: ${value};\n`;
     });
+  }
+}
+
+class FlutterFormater extends Formater {
+  format() {
+    const constructorKeys = [];
+    let modelResult = this._handleFormat(params => {
+      let { types, item, key, value } = params;
+      function formatValue(tempValue) {
+        if (tempValue == types.stringType) {
+          tempValue = 'String';
+        } else if (tempValue == types.booleanType) {
+          tempValue = 'bool';
+        } else if (tempValue == types.longType) {
+          tempValue = 'int';
+        } else if (tempValue == types.floatType) {
+          tempValue = 'double';
+        } else if (tempValue == types.idType) {
+          tempValue = 'Object';
+        }
+        return tempValue;
+      }
+
+      value = formatValue(value);
+      const allowNull = localStorage.getItem('allowNull') == 'true';
+      const allowNullStr = allowNull ? '?' : '';
+      if (value == types.arrayType) {
+        let itemArrayType = item.arrayType;
+        itemArrayType = formatValue(itemArrayType);
+        value = `List<${itemArrayType}${allowNullStr}>`;
+      }
+      constructorKeys.push(`this.${key}`);
+      return `${this._getAnnotation()}${value}${allowNullStr} ${key};\n`;
+    });
+    const constructorResult = !!constructorKeys ? `Class(${constructorKeys.join(', ')});` : '';
+    return `${modelResult}\n${constructorResult}`;
   }
 }
