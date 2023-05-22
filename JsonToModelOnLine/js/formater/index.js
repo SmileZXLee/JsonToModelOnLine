@@ -194,7 +194,8 @@ class SwiftFormater extends Formater {
         value = `[${itemArrayType}]`;
       }
       const annotation = localStorage.getItem('addComment') == 'true' ? '///\n' : '';
-      return `${annotation}var ${key} :${value}?\n`;
+      const allowNull = localStorage.getItem('allowNull') == 'true';
+      return `${annotation}var ${key} :${value}${allowNull ? '?' : ''}\n`;
     });
   }
 }
@@ -270,7 +271,8 @@ class TypescriptFormater extends Formater {
         value = `<${itemArrayType}>[]`;
       }
       const annotation = localStorage.getItem('addComment') == 'true' ? '//\n' : '';
-      return `${annotation}${key}?: ${value};\n`;
+      const allowNull = localStorage.getItem('allowNull') == 'true';
+      return `${annotation}${key}${allowNull ? '?' : ''}: ${value};\n`;
     });
   }
 }

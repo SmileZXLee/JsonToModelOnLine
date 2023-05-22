@@ -125,6 +125,7 @@ var vm1 = new Vue({
       })
     },
     copyCodeClick(item) {
+      if (item.copied) return;
       this.$set(item, 'copied', true);
       navigator.clipboard.writeText(item.data);
       setTimeout(() => {
@@ -142,6 +143,7 @@ var vm2 = new Vue({
     toHumpChecked: localStorage.getItem('toHump') == 'true' ? 1 : 0,
     toUnderlineChecked: localStorage.getItem('toUnderline') == 'true' ? 1 : 0,
     outputAllToStringChecked: localStorage.getItem('outputAllToString') == 'true' ? 1 : 0,
+    allowNullChecked: localStorage.getItem('allowNull') == 'true' ? 1 : 0,
     languages: [
       'Java',
       'PHP',

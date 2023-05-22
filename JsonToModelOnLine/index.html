@@ -39,6 +39,9 @@
         <label>
           <input name="outputAllToString" type="checkbox" @click="actionClick($event)" :checked="outputAllToStringChecked"/>值类型全转string
         </label>
+        <label>
+          <input name="allowNull" type="checkbox" @click="actionClick($event)" :checked="allowNullChecked"/>允许值为空
+        </label>
       </div> 
     </div>
     <div class="main">
@@ -60,7 +63,7 @@
             <div class="output-part-card">
               <div class="output-part-card-top">
                 <span class="card-current-language">{{currentConvertedLanguage}}</span>
-                <span class="copy-btn" @click="copyCodeClick(item)">{{item.copied?'✓已复制':'复制代码'}}</span>
+                <span class="copy-btn" @click="copyCodeClick(item)">{{item.copied?'✓ 已复制':'复制代码'}}</span>
               </div>
               <pre><code :class="`language-${languageAliasesMapper[currentConvertedLanguage]}`">{{item.data}}</code></pre>
             </div>
