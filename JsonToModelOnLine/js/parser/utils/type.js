@@ -65,7 +65,8 @@ class Type {
   //获取数组中元素的类型
   static getArraContentType(array) {
     if (!array.length) {
-      return idType;
+      console.log(array);
+      return Type.types.idType;
     }
     return this.getType(array[0]);
   }
