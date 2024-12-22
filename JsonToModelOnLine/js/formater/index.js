@@ -32,7 +32,7 @@ class FormaterFactory {
         formater = new VueFormater(data);
         break;
       }
-      case 'Typescript': {
+      case 'Typescript/ArkTs': {
         formater = new TypescriptFormater(data);
         break;
       }
@@ -250,7 +250,9 @@ class VueFormater extends Formater {
 
 class TypescriptFormater extends Formater {
   format() {
-    return this._handleFormat(params => {
+    const constructorKeyValues = [];
+    const constructorKeySetters = [];
+    const modelResult = this._handleFormat(params => {
       let { types, item, key, value } = params;
 
       function formatValue(tempValue) {
@@ -274,17 +276,21 @@ class TypescriptFormater extends Formater {
         itemArrayType = formatValue(itemArrayType);
         value = `<${itemArrayType}>[]`;
       }
+      constructorKeyValues.push(`${key}: ${value}`);
+      constructorKeySetters.push(`  this.${key} = ${key};\n`);
       const annotation = localStorage.getItem('addComment') == 'true' ? '//\n' : '';
       const allowNull = localStorage.getItem('allowNull') == 'true';
       return `${annotation}${key}${allowNull ? '?' : ''}: ${value};\n`;
     });
+    const constructorResult = !!constructorKeyValues ? `constructor(${constructorKeyValues.join(', ')}){\n${constructorKeySetters.join('')}}` : '';
+    return `${modelResult}\n${constructorResult}`;
   }
 }
 
 class FlutterFormater extends Formater {
   format() {
     const constructorKeys = [];
-    let modelResult = this._handleFormat(params => {
+    const modelResult = this._handleFormat(params => {
       let { types, item, key, value } = params;
       function formatValue(tempValue) {
         if (tempValue == types.stringType) {

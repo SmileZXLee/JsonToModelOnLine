@@ -30,7 +30,7 @@ var vm1 = new Vue({
       'Swift': 'swift',
       'C#': 'csharp',
       'Vue': 'javascript',
-      'Typescript': 'typescript',
+      'Typescript/ArkTs': 'typescript',
       'Flutter': 'dart'
     },
     currentConvertedLanguage: localStorage.getItem('language') || 'Java',
@@ -152,7 +152,7 @@ var vm2 = new Vue({
       'Swift',
       'C#',
       'Vue',
-      'Typescript',
+      'Typescript/ArkTs',
       'Flutter'
     ]
   },
